@@ -69,7 +69,7 @@ Hybrid-LSTM-CNN-Model-SIMON-Cipher/
 ├── cipher.py             # SIMON block cipher (all block/key sizes + 6 modes)
 ├── generate.py           # Generates Dataset-1…7 CSVs (CTT / NCTT / RWTT)
 ├── preprocessing.py      # Loads CSVs → normalized byte matrices, train/test split
-├── model.py              # Baseline BiLSTM model (reference architecture)
+├── model.py              # Baseline LSTM model (reference architecture)
 │
 ├── train_ctt.py          # Train hybrid model on Correlated Text (Dataset-1)
 ├── train_nctt.py         # Train / test on Non-Correlated text (Dataset-2…4)
@@ -143,7 +143,7 @@ Input (8, 1)
 Training uses **MAE loss** with **Adam/RMSprop** optimizers. Hyperparameters for
 key rounds (1, 2, 3, 4, 20, …) come from the paper's tables; any other round
 falls back to an **Optuna** search over hidden units, optimizer, learning rate,
-epochs, and batch size. `model.py` holds a simpler **Bidirectional-LSTM**
+epochs, and batch size. `model.py` holds a simpler **LSTM model**
 baseline for reference.
 
 ---
@@ -212,7 +212,7 @@ python preprocessing.py     # prints train/test shapes for Dataset-1…7
 
 ### 4. Inspect the baseline model
 ```bash
-python model.py             # prints the BiLSTM model summary
+python model.py             # prints the LSTM model summary
 ```
 
 ### 5. Train
@@ -294,3 +294,8 @@ See the CSVs for the complete round-by-round tables:
   are required; exact versions are not pinned.
 - **Cipher attribution** — `cipher.py` is based on a public SIMON/SPECK
   implementation by *inmcm*.
+
+
+  The *LSTM-only* model this hybrid is compared against:
+[LSTM-Model-SIMON-Cipher](https://github.com/hudailameenal/LSTM-Model-SIMON-Cipher.git).
+It runs the same SIMON plaintext-recovery task without the CNN layers, so the accuracy gap shows what the CNN feature-extraction adds.
